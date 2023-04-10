@@ -3,42 +3,152 @@ import { ref } from 'vue'
 const name = ref('')
 const email = ref('')
 const password = ref('')
+const passwordConf = ref('')
 const dataNasc = ref('00/00/0000')
 const endereco = ref('')
 const cidade = ref('')
+const estado = ref('')
+const estadoDesc = ref('')
 const hobbies = ref('')
 const lingProg = ref('')
 const bio = ref('')
+const msgError = ref('')
 const mostrarDiv = ref(false)
+
+function validaSenha() {
+  atualizaEstado();
+  if (password.value === passwordConf.value) {
+    msgError.value = ''
+    return true
+  } else {
+    msgError.value = 'As senhas não conferem'
+    return false
+  }
+}
+
+function atualizaEstado(){
+switch (estado.value) {
+  case 'AC':
+    estadoDesc.value = 'Acre'
+    break
+  case 'AL':
+    estadoDesc.value = 'Alagoas'
+    break
+  case 'AP':
+    estadoDesc.value = 'Amapá'
+    break
+  case 'AM':
+    estadoDesc.value = 'Amazonas'
+    break
+  case 'BA':
+    estadoDesc.value = 'Bahia'
+    break
+  case 'CE':
+    estadoDesc.value = 'Ceará'
+    break
+  case 'DF':
+    estadoDesc.value = 'Distrito Federal'
+    break
+  case 'ES':
+    estadoDesc.value = 'Espírito Santo'
+    break
+  case 'GO':
+    estadoDesc.value = 'Goiás'
+    break
+  case 'MA':
+    estadoDesc.value = 'Maranhão'
+    break
+  case 'MT':
+    estadoDesc.value = 'Mato Grosso'
+    break
+  case 'MS':
+    estadoDesc.value = 'Mato Grosso do Sul'
+    break
+  case 'MG':
+    estadoDesc.value = 'Minas Gerais'
+    break
+  case 'PA':
+    estadoDesc.value = 'Pará'
+    break
+  case 'PB':
+    estadoDesc.value = 'Paraíba'
+    break
+  case 'PR':
+    estadoDesc.value = 'Paraná'
+    break
+  case 'PE':
+    estadoDesc.value = 'Pernambuco'
+    break
+  case 'PI':
+    estadoDesc.value = 'Piauí'
+    break
+  case 'RJ':
+    estadoDesc.value = 'Rio de Janeiro'
+    break
+  case 'RN':
+    estadoDesc.value = 'Rio Grande do Norte'
+    break
+  case 'RS':
+    estadoDesc.value = 'Rio Grande do Sul'
+    break
+  case 'RO':
+    estadoDesc.value = 'Rondônia'
+    break
+  case 'RR':
+    estadoDesc.value = 'Roraima'
+    break
+  case 'SC':
+    estadoDesc.value = 'Santa Catarina'
+    break
+  case 'SP':
+    estadoDesc.value = 'São Paulo'
+    break
+  case 'SE':
+    estadoDesc.value = 'Sergipe'
+    break
+  case 'TO':
+    estadoDesc.value = 'Tocantins'
+    break
+}
+}
 </script>
 
 <template>
-  <form @submit.prevent="mostrarDiv = !mostrarDiv">
+  <form @submit.prevent="mostrarDiv = validaSenha()">
     <div class="info">
+      <h1 class="title">Formulário</h1>
       <label>Nome:</label>
-      <input type="text" v-model="name" placeholder="Digite seu nome" minlength="3" maxlength="20" required/>
+      <input
+        type="text"
+        v-model="name"
+        v-on:keypress="mostrarDiv = false"
+        placeholder="Digite seu nome"
+        minlength="3"
+        maxlength="20"
+        required
+      />
       <p>
-        Email:
-        <input type="email" v-model="email" placeholder="Digite seu email" required/>
+        <label>Email:</label>
+        <input type="email" v-model="email" placeholder="Digite seu email" required />
       </p>
       <p>
-        Senha:
-        <input type="password" v-model="password" placeholder="Digite sua senha" required/>
+        <label>Senha:</label>
+        <input type="password" v-model="password" placeholder="Digite sua senha" required />
       </p>
       <p>
-        Confirme sua senha
-        <input type="password" v-model="password" placeholder="Confirme sua senha" required/>
+        <label>Confirme sua senha:</label>
+        <input type="password" v-model="passwordConf" placeholder="Confirme sua senha" required />
       </p>
       <p>
-        Data de nascimento
-        <input type="date" v-model="dataNasc" required> 
+        <label>Data de nascimento:</label>
+        <input type="date" v-model="dataNasc" required />
       </p>
       <p>
-        Endereço
+        <label>Endereço:</label>
         <input type="text" v-model="endereco" placeholder="Digite seu endereço" />
       </p>
       <p>
-        Cidade
+        <label>Cidade:</label>
         <input type="string" v-model="cidade" placeholder="Digite sua cidade" />
       </p>
       <p>
@@ -74,28 +184,39 @@ const mostrarDiv = ref(false)
         </select>
       </p>
       <p>
-        Hobbies
-        <input type="text" v-model="hobbies" placeholder="Digite seus hobbies" maxlength="100">
+        <label>Hobbies:</label>
+        <textarea
+          type="text"
+          v-model="hobbies"
+          placeholder="Digite seus hobbies"
+          maxlength="100"
+        ></textarea>
       </p>
       <p>
-        Linguagens de Programação 
-        <input type="text" v-model="lingProg" placeholder="Digite quais linguagens você domina">
+        <label>Linguagens de Programação: </label>
+        <input type="text" v-model="lingProg" placeholder="Digite quais linguagens você domina" />
       </p>
       <p>
-        Biografia
-        <input type="text" v-model="bio" placeholder="Fale sobre você" minlength="200">
+        <label>Biografia:</label>
+        <textarea
+          type="text"
+          v-model="bio"
+          placeholder="Fale sobre você"
+          minlength="200"
+        ></textarea>
       </p>
-      <button type="submit">Enviar</button>
+      <button class="enviar" type="submit">Enviar</button>
     </div>
+    <p class="error">{{ msgError }}</p>
   </form>
-  <div v-if="mostrarDiv">
-    <p>Dados enviados com sucesso!</p>
+  <div class="mostraDiv" v-if="mostrarDiv">
+    <p class="confirma">Dados enviados com sucesso!</p>
     <p>Nome: {{ name }}</p>
     <p>Email: {{ email }}</p>
     <p>Data de nascimento: {{ dataNasc }}</p>
     <p>Endereço: {{ endereco }}</p>
     <p>Cidade: {{ cidade }}</p>
-    <p>Estado: {{ estado }}</p>
+    <p>Estado: {{ estadoDesc }}</p>
     <p>Hobbies: {{ hobbies }}</p>
     <p>Linguagens de programação: {{ lingProg }}</p>
     <p>Biografia: {{ bio }}</p>
@@ -103,4 +224,75 @@ const mostrarDiv = ref(false)
 </template>
 
 <style scoped>
+
+input{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 16px;
+  margin-left: 5px;
+}
+textarea{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-left: 5px;
+}
+
+select{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 16px;
+  margin-left: 5px;
+}
+.info {
+  background-color: rgb(250, 116, 174);
+  padding: 20px 30px;
+  color: rgb(183, 210, 219);
+  border-radius: 10px;
+}
+h1 {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.error {
+  color: red;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.mostraDiv {
+  background-color: rgb(250, 116, 174);
+  padding: 20px 30px;
+  margin-left: 30px;
+  color: rgb(183, 210, 219);
+  border-radius: 10px;
+}
+.confirma {
+  color: green;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.title {
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.5em;
+  margin-bottom: 2px;
+}
+
+.enviar{
+  border-radius: 5px;
+  border-color: black;
+  color: black;
+  background-color: rgb(250, 116, 174);
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-top: 15px;
+}
+
+.enviar:hover{
+  background-color: rgb(255, 149, 195);
+}
 </style>
