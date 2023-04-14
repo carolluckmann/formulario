@@ -202,7 +202,7 @@ switch (estado.value) {
           type="text"
           v-model="bio"
           placeholder="Fale sobre você"
-          minlength="200"
+          maxlength="200"
         ></textarea>
       </p>
       <button class="enviar" type="submit">Enviar</button>
