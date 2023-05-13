@@ -126,9 +126,9 @@ function handleFileUpload(e) {
 <template>
   <form @submit.prevent="mostrarDiv = validaSenha()">
     <div class="info">
-      <h1 class="title">Formulário</h1>
-      <p>
-      <h3>Escolha sua foto de perfil:</h3>
+      <h1 class="title">Formulário</h1> 
+        <h3>Escolha sua foto de perfil:</h3>
+        <p>
         <input
           type="file"
           id="imagem"
