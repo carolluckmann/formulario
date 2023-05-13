@@ -10,8 +10,9 @@ const cidade = ref('')
 const estado = ref('')
 const estadoDesc = ref('')
 const hobbies = ref('')
-const lingProg = ref('')
+const lingProg = ref([])
 const bio = ref('')
+const imagem = ref('')
 const msgError = ref('')
 const mostrarDiv = ref(false)
 
@@ -111,12 +112,29 @@ switch (estado.value) {
     break
 }
 }
+
+function handleFileUpload(e) {
+  const target = e.target
+  if (target && target.files) {
+    const file = target.files[0]
+    console.log(file)
+    imagem.value = URL.createObjectURL(file)
+  }
+}
 </script>
 
 <template>
   <form @submit.prevent="mostrarDiv = validaSenha()">
     <div class="info">
       <h1 class="title">Formulário</h1>
+      <p>
+      <h3>Escolha sua foto de perfil:</h3>
+        <input
+          type="file"
+          id="imagem"
+          @change="handleFileUpload($event)"
+        />
+      </p>
       <label>Nome:</label>
       <input
         type="text"
@@ -194,7 +212,11 @@ switch (estado.value) {
       </p>
       <p>
         <label>Linguagens de Programação: </label>
-        <input type="text" v-model="lingProg" placeholder="Digite quais linguagens você domina" />
+         <input type="checkbox" v-model="lingProg" value="JavaScript" /> JavaScript
+      <input type="checkbox" v-model="lingProg" value="PHP" /> PHP
+      <input type="checkbox" v-model="lingProg" value="C++" /> C++
+      <input type="checkbox" v-model="lingProg" value="SQL" /> SQL
+      <input type="checkbox" v-model="lingProg" value="Python" /> Python
       </p>
       <p>
         <label>Biografia:</label>
@@ -211,6 +233,9 @@ switch (estado.value) {
   </form>
   <div class="mostraDiv" v-if="mostrarDiv">
     <p class="confirma">Dados enviados com sucesso!</p>
+    <div class="img_perfil">
+      <img :src="imagem" alt="" />
+    </div>
     <p>Nome: {{ name }}</p>
     <p>Email: {{ email }}</p>
     <p>Data de nascimento: {{ dataNasc }}</p>
@@ -249,7 +274,7 @@ select{
 .info {
   background-color: rgb(250, 116, 174);
   padding: 20px 30px;
-  color: rgb(183, 210, 219);
+  color: rgb(224, 224, 224);
   border-radius: 10px;
 }
 h1 {
@@ -294,5 +319,17 @@ h1 {
 
 .enviar:hover{
   background-color: rgb(255, 149, 195);
+}
+
+.img_perfil {
+  width: '80%';
+  display: flex;
+  justify-content: center;
+}
+
+.img_perfil {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }
 </style>
